@@ -86,57 +86,6 @@ void display() {
     glutSwapBuffers();
 }
 
-<<<<<<< HEAD
-=======
-void draw3D () {
-
-    glBegin(GL_QUADS);
-    /* Patokan dari kotak warna pink */
-    /* Kotak hijau (atas) */
-    glColor3f(0.0, 1.0, 0.0);
-    glVertex3f( 2.0, 1.0, -1.0);
-    glVertex3f(-2.0, 1.0, -1.0);
-    glVertex3f(-2.0, 1.0,  1.0);
-    glVertex3f( 2.0, 1.0, 1.0);
-
-    /* Kotak oren (bawah) */
-    glColor3f(1.0, 0.5, 0.0);
-    glVertex3f( 2.0, -1.0,  1.0);
-    glVertex3f(-2.0, -1.0,  1.0);
-    glVertex3f(-2.0, -1.0, -1.0);
-    glVertex3f( 2.0, -1.0, -1.0);
-
-    /* Kotak merah (kiri) */
-    glColor3f(1.0, 0.0, 0.0);
-    glVertex3f( 2.0,  1.0, 1.0);
-    glVertex3f(-2.0,  1.0, 1.0);
-    glVertex3f(-2.0, -1.0, 1.0);
-    glVertex3f( 2.0, -1.0, 1.0);
-
-    /* Kotak kuning (kanan) */
-    glColor3f(1.0, 1.0, 0.0);
-    glVertex3f( 2.0, -1.0, -1.0);
-    glVertex3f(-2.0, -1.0, -1.0);
-    glVertex3f(-2.0,  1.0, -1.0);
-    glVertex3f( 2.0,  1.0, -1.0);
-
-    /* Kotak biru (belakang) */
-    glColor3f(0.0, 0.0, 1.0);
-    glVertex3f(-2.0,  1.0,  1.0);
-    glVertex3f(-2.0,  1.0, -1.0);
-    glVertex3f(-2.0, -1.0, -1.0);
-    glVertex3f(-2.0, -1.0,  1.0);
-
-    /* Kotak pink (depan) */
-    glColor3f(1.0, 0.0, 1.0);
-    glVertex3f(2.0,  1.0, -1.0);
-    glVertex3f(2.0,  1.0,  1.0);
-    glVertex3f(2.0, -1.0,  1.0);
-    glVertex3f(2.0, -1.0, -1.0);
-
-    glEnd();
-}
->>>>>>> 3243fff3b72defa5c674dea49e164d9f28202ad1
 
 int main(int argc, char **argv) {
 
