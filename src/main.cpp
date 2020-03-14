@@ -1,9 +1,20 @@
+#ifdef __APPLE__
 #include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+
 #include <cmath>
 #include <iostream>
-#include "utils.cpp"
+
+#include "parts/utils.h"
+#include "parts/body.h"
+#include "parts/propeller.h"
+#include "parts/wingsmain.h"
+#include "parts/wingstail.h"
 
 using namespace std;
+
 // Global variables
 int th;
 int ph;
@@ -21,6 +32,20 @@ int moveUpz = 0;
 double fov = 55;
 double asp = width / height;
 double dist = 8.0;
+
+void drawWindow();
+void keyboardControl(int key, int x, int y);
+void display();
+void draw3D();
+
+
+void draw3D () {
+    double Xmin = -2.25, Xmax = -2.50;
+    double Ymin = -0.25, Ymax =  0.25;
+    double Zmin = -1.00, Zmax =  1.00;
+
+    drawShape(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax);
+}
 
 void drawWindow() {
     // Initialize Projection Matrix
@@ -58,8 +83,7 @@ void setCameraForCirclingObject() {
     double upZcoord = 0 + moveUpz;
 
     gluLookAt(eyeXcoord, eyeYcoord, eyeZcoord,
-            originXcoord, originYcoord, originZcoord,
-            upXcoord, upYcoord, upZcoord
+            originXcoord, originYcoord, originZcoord,upXcoord, upYcoord, upZcoord
     );
 }
 
@@ -89,6 +113,9 @@ void specialKeyboardControl (int key, int x, int y) {
             break;
         case GLUT_KEY_DOWN:
             ph = ph - 5;
+            break;
+        case GLUT_KEY_F1:
+            exit(0);
             break;
     }
     displayCirclingObject();
@@ -143,7 +170,6 @@ void ordinaryKeyboardControl(unsigned char key, int x, int y) {
     drawWindow();
     glutPostRedisplay();
 }
-
 
 int main(int argc, char **argv) {
 

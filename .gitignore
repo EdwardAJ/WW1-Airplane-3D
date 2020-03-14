@@ -3,3 +3,7 @@ comprun.sh
 Project 1.pdf
 src/bin/
 src/obj/
+src/src.cbp
+src/src.depend
+src/src.layout
+src/example.cpp
