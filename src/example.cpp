@@ -1,179 +1,140 @@
-/*
- * GLUT Shapes Demo
- *
- * Written by Nigel Stewart November 2003
- *
- * This program is test harness for the sphere, cone
- * and torus shapes in GLUT.
- *
- * Spinning wireframe and smooth shaded shapes are
- * displayed until the ESC or q key is pressed.  The
- * number of geometry stacks and slices can be adjusted
- * using the + and - keys.
- */
 
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/glut.h>
-#endif
+/* Copyright (c) Mark J. Kilgard, 1994. */
 
+/* This program is freely distributable without licensing fees 
+   and is provided without guarantee or warrantee expressed or 
+   implied. This program is -not- in the public domain. */
+
+#include <string.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include <GLUT/glut.h>
 
-static int slices = 16;
-static int stacks = 16;
+#define NUM_DIALS 8
+#define NUM_BUTTONS 32
 
-/* GLUT callback Handlers */
+int *dials, *buttons;
 
-static void resize(int width, int height)
+#undef PI /* Some systems may have this defined. */
+#define PI            3.14159265358979323846
+
+void
+drawCircle(int x, int y, int r, int dir)
 {
-    const float ar = (float) width / (float) height;
+   float angle;
 
-    glViewport(0, 0, width, height);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glFrustum(-ar, ar, -1.0, 1.0, 2.0, 100.0);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity() ;
+   glPushMatrix();
+   glTranslatef(x,y,0);
+   glBegin(GL_TRIANGLE_FAN);
+   glVertex2f(0,0);
+   for(angle = 2*PI; angle >= 0; angle -= PI/12) {
+      glVertex2f(r*cos(angle),r*sin(angle));
+   }
+   glEnd();
+   glColor3f(0,0,1);
+   glBegin(GL_LINES);
+   glVertex2f(0,0);
+   glVertex2f(r*cos(dir*PI/180),r*sin(dir*PI/180));
+   glEnd();
+   glPopMatrix();
 }
 
-static void display(void)
+void
+displayDials(void)
 {
-    const double t = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
-    const double a = t*90.0;
+  int i;
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glColor3d(1,0,0);
-
-    glPushMatrix();
-        glTranslated(-2.4,1.2,-6);
-        glRotated(60,1,0,0);
-        glRotated(a,0,0,1);
-        glutSolidSphere(1,slices,stacks);
-    glPopMatrix();
-
-    glPushMatrix();
-        glTranslated(0,1.2,-6);
-        glRotated(60,1,0,0);
-        glRotated(a,0,0,1);
-        glutSolidCone(1,1,slices,stacks);
-    glPopMatrix();
-
-    glPushMatrix();
-        glTranslated(2.4,1.2,-6);
-        glRotated(60,1,0,0);
-        glRotated(a,0,0,1);
-        glutSolidTorus(0.2,0.8,slices,stacks);
-    glPopMatrix();
-
-    glPushMatrix();
-        glTranslated(-2.4,-1.2,-6);
-        glRotated(60,1,0,0);
-        glRotated(a,0,0,1);
-        glutWireSphere(1,slices,stacks);
-    glPopMatrix();
-
-    glPushMatrix();
-        glTranslated(0,-1.2,-6);
-        glRotated(60,1,0,0);
-        glRotated(a,0,0,1);
-        glutWireCone(1,1,slices,stacks);
-    glPopMatrix();
-
-    glPushMatrix();
-        glTranslated(2.4,-1.2,-6);
-        glRotated(60,1,0,0);
-        glRotated(a,0,0,1);
-        glutWireTorus(0.2,0.8,slices,stacks);
-    glPopMatrix();
-
-    glutSwapBuffers();
+  for(i=0;i<NUM_DIALS;i++) {
+    glColor3f(0, 1, 0);
+    drawCircle(60 + ((i+1)%2) * 100, 60 + (i/2) * 100, 40, dials[NUM_DIALS-1-i]-90);
+  }
 }
 
-
-static void key(unsigned char key, int x, int y)
+void
+displayButtons(void)
 {
-    switch (key)
-    {
-        case 27 :
-        case 'q':
-            exit(0);
-            break;
+  int i, n;
 
-        case '+':
-            slices++;
-            stacks++;
-            break;
-
-        case '-':
-            if (slices>3 && stacks>3)
-            {
-                slices--;
-                stacks--;
-            }
-            break;
+  glBegin(GL_QUADS);
+  for(i=0,n=0;i<NUM_BUTTONS;i++,n++) {
+    switch(n) {
+    case 0:
+    case 5:
+    case 30:
+      n++;
     }
-
-    glutPostRedisplay();
+    if(buttons[i]) {
+      glColor3f(1,0,0);
+    } else {
+      glColor3f(1,1,1);
+    }
+    glVertex2f((n%6)*40+250,(n/6)*40+10);
+    glVertex2f((n%6)*40+270,(n/6)*40+10);
+    glVertex2f((n%6)*40+270,(n/6)*40+30);
+    glVertex2f((n%6)*40+250,(n/6)*40+30);
+  }
+  glEnd();
 }
 
-static void idle(void)
+void
+display(void)
 {
-    glutPostRedisplay();
+  glClear(GL_COLOR_BUFFER_BIT);
+  displayDials();
+  displayButtons();
+  glutSwapBuffers();
 }
 
-const GLfloat light_ambient[]  = { 0.0f, 0.0f, 0.0f, 1.0f };
-const GLfloat light_diffuse[]  = { 1.0f, 1.0f, 1.0f, 1.0f };
-const GLfloat light_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-const GLfloat light_position[] = { 2.0f, 5.0f, 5.0f, 0.0f };
-
-const GLfloat mat_ambient[]    = { 0.7f, 0.7f, 0.7f, 1.0f };
-const GLfloat mat_diffuse[]    = { 0.8f, 0.8f, 0.8f, 1.0f };
-const GLfloat mat_specular[]   = { 1.0f, 1.0f, 1.0f, 1.0f };
-const GLfloat high_shininess[] = { 100.0f };
-
-/* Program entry point */
-
-/*
-int main(int argc, char *argv[])
+void
+reshape(int w, int h)
 {
-    glutInit(&argc, argv);
-    glutInitWindowSize(640,480);
-    glutInitWindowPosition(10,10);
-    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
-
-    glutCreateWindow("GLUT Shapes");
-
-    glutReshapeFunc(resize);
-    glutDisplayFunc(display);
-    glutKeyboardFunc(key);
-    glutIdleFunc(idle);
-
-    glClearColor(1,1,1,1);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
-
-    glEnable(GL_LIGHT0);
-    glEnable(GL_NORMALIZE);
-    glEnable(GL_COLOR_MATERIAL);
-    glEnable(GL_LIGHTING);
-
-    glLightfv(GL_LIGHT0, GL_AMBIENT,  light_ambient);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE,  light_diffuse);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-
-    glMaterialfv(GL_FRONT, GL_AMBIENT,   mat_ambient);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
-    glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
-    glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
-
-    glutMainLoop();
-
-    return EXIT_SUCCESS;
+  glViewport(0, 0, w, h);
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluOrtho2D(0, w, 0, h);
+  glScalef(1, -1, 1);
+  glTranslatef(0, -h, 0);
 }
-*/
+
+void
+dodial(int dial, int value)
+{
+  if(dial > 0 && dial <= NUM_DIALS) {
+  dials[dial - 1] = value % 360;
+  glutPostRedisplay();
+  }
+}
+
+void
+dobutton(int button, int state)
+{
+  if(button > 0 && button <= NUM_BUTTONS) {
+    buttons[button-1] = (state == GLUT_DOWN);
+    glutPostRedisplay();
+  }
+}
+
+int
+main(int argc, char **argv)
+{
+  int width, height;
+  glutInit(&argc, argv);
+  dials = (int*) calloc(NUM_DIALS, sizeof(int));
+  buttons = (int*) calloc(NUM_BUTTONS, sizeof(int));
+  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+  width = 240 + 240;
+  height = 100*((NUM_DIALS+1)/2) + 20;
+  if(height < 240) height = 240;
+  glutInitWindowSize(width, height);
+  glutCreateWindow("GLUT dials & buttons");
+  glClearColor(0.5, 0.5, 0.5, 1.0);
+  glLineWidth(3.0);
+  glutDialsFunc(dodial);
+  glutButtonBoxFunc(dobutton);
+  glutDisplayFunc(display);
+  glutReshapeFunc(reshape);
+  glutInitWindowSize(240, 240);
+  glutMainLoop();
+  return 0;             /* ANSI C requires main to return int. */
+}
