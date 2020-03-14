@@ -6,7 +6,7 @@
 	<stdlib.h>
 	"utils.cpp"
 
-983676786 c:\program files (x86)\codeblocks\mingw\include\gl\glut.h
+1584179236 c:\program files (x86)\codeblocks\mingw\include\gl\glut.h
 	<windows.h>
 	<stdlib.h>
 	<GL/gl.h>
@@ -242,4 +242,24 @@
 	<_mingw.h>
 
 1584178202 c:\users\vincent chuardi\semester6\grafkom\ww1-airplane-3d\src\utils.cpp
+
+1584181011 source:d:\kuliah semester 6\grafika komputer\ww1-airplane-3d\src\main.cpp
+	<GLUT/glut.h>
+	<GL/glut.h>
+	<math.h>
+	<stdlib.h>
+	"utils.cpp"
+
+1584180435 d:\kuliah semester 6\grafika komputer\ww1-airplane-3d\src\utils.cpp
+
+1584180435 source:d:\kuliah semester 6\grafika komputer\ww1-airplane-3d\src\parts\body.cpp
+	<GLUT/glut.h>
+	<GL/glut.h>
+	<stdlib.h>
+
+1584180435 source:d:\kuliah semester 6\grafika komputer\ww1-airplane-3d\src\parts\propeller.cpp
+
+1584180435 source:d:\kuliah semester 6\grafika komputer\ww1-airplane-3d\src\parts\wingsmain.cpp
+
+1584180435 source:d:\kuliah semester 6\grafika komputer\ww1-airplane-3d\src\parts\wingstail.cpp
 

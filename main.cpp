@@ -1,4 +1,4 @@
-#include <GLUT/glut.h>
+#include <GL/glut.h>
 #include <cmath>
 #include <iostream>
 #include "utils.cpp"
@@ -61,7 +61,7 @@ void display() {
     double originXcoord = -1 * cos(degree);
     double originYcoord = 0;
     double originZcoord = -1 * sin(degree);
-    
+
     double upXcoord = 0;
     double upYcoord = 1;
     double upZcoord = 0;
