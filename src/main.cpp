@@ -9,6 +9,14 @@ int th;
 int ph;
 int width = 1000;
 int height = 600;
+int movex = 0;
+int movey = 0;
+
+int moveUpx = 0;
+int moveUpy = 0;
+int moveUpz = 0;
+
+
 // Field of view
 double fov = 55;
 double asp = width / height;
@@ -19,11 +27,56 @@ void drawWindow() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(fov, asp, dist/4, dist*4);
+    glTranslatef(-movex, -movey, -movex);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
 
-void keyboardControl (int key, int x, int y) {
+void initializeDisplay () {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+    glLoadIdentity();
+}
+
+void setCameraForCirclingObject() {
+    double thDegree = getDegreeFromRadian(th);
+    double phDegree = getDegreeFromRadian(ph);
+
+    // circling horizontal
+    double eyeXcoord = dist * cos(thDegree);
+    double eyeYcoord = 0;
+    double eyeZcoord = dist * sin(thDegree);
+
+    double originXcoord = 0;
+    double originYcoord = 0;
+    double originZcoord = 0;
+
+    double upXcoord = 0 + moveUpx;
+    double upYcoord = 1 + moveUpy;
+    double upZcoord = 0 + moveUpz;
+
+    gluLookAt(eyeXcoord, eyeYcoord, eyeZcoord,
+            originXcoord, originYcoord, originZcoord,
+            upXcoord, upYcoord, upZcoord
+    );
+}
+
+void drawAndFlush() {
+    drawCube3D();
+    glFlush();
+    glutSwapBuffers();
+}
+
+
+void displayCirclingObject() {
+    initializeDisplay();
+    setCameraForCirclingObject();
+    drawAndFlush();
+}
+
+void specialKeyboardControl (int key, int x, int y) {
     switch (key) {
         case GLUT_KEY_RIGHT:
             th = th + 5;
@@ -38,6 +91,7 @@ void keyboardControl (int key, int x, int y) {
             ph = ph - 5;
             break;
     }
+    displayCirclingObject();
 
     th = th % 360;
     ph = ph % 360;
@@ -46,44 +100,48 @@ void keyboardControl (int key, int x, int y) {
     glutPostRedisplay();
 }
 
-void display() {
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
-    glLoadIdentity();
+void ordinaryKeyboardControl(unsigned char key, int x, int y) {
+    switch (key) {
+        case 'x':
+            fov = fov + 5;
+            break;
+        case 'z':
+            fov = fov - 5;
+            break;
+        case 'a':
+            movex += 1;
+            break;
+        case 'd':
+            movex -= 1;
+            break;
+        case 'w':
+            movey += 1;
+            break;
+        case 's':
+            movey -= 1;
+            break;
+        case 'i':
+            moveUpy += 1;
+            break;
+        case 'k':
+            moveUpy -= 1;
+            break;
+        case 'j':
+            moveUpx -= 1;
+            break;
+        case 'l':
+            moveUpx += 1;
+            break;
+        case 'm':
+            moveUpz -= 1;
+            break;
+        case 'n':
+            moveUpz += 1;
+            break;
+    }
 
-    double thDegree = getDegreeFromRadian(th);
-    double phDegree = getDegreeFromRadian(ph);
-
-    // double eyeXcoord = dist * cos(thDegree) * cos(phDegree);
-    // double eyeYcoord = 0;
-    // double eyeZcoord = dist * sin(thDegree) * cos(phDegree);
-
-    double eyeXcoord = dist * sin(thDegree) * cos(phDegree);
-    double eyeYcoord = dist * cos(thDegree) * sin(phDegree);
-    double eyeZcoord = dist * cos(thDegree) * cos(phDegree);
-
-    // double originXcoord = -1 * cos(thDegree);
-    // double originXcoord = -1 * sin(thDegree) * cos(phDegree);
-    double originXcoord = sin(thDegree) * cos(phDegree);
-    double originYcoord = cos(thDegree) * sin(phDegree);
-    double originZcoord = cos(thDegree) * cos(phDegree);
-    // double originZcoord = -1 * sin(thDegree);
-    // double originZcoord = -1 * cos(thDegree) * cos(phDegree);
-    
-    double upXcoord = 0;
-    double upYcoord = cos(phDegree);
-    double upZcoord = 0;
-
-    gluLookAt(eyeXcoord, eyeYcoord, eyeZcoord,
-            originXcoord, originYcoord, originZcoord,
-            upXcoord, upYcoord, upZcoord
-    );
-
-    drawCube3D();
-    glFlush();
-    glutSwapBuffers();
+    drawWindow();
+    glutPostRedisplay();
 }
 
 
@@ -93,8 +151,9 @@ int main(int argc, char **argv) {
     glutInitDisplayMode( GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowSize(width, height);
     glutCreateWindow("World War 1 Airplane Showcase");
-    glutDisplayFunc(display);
-    glutSpecialFunc(keyboardControl);
+    glutDisplayFunc(displayCirclingObject);
+    glutSpecialFunc(specialKeyboardControl);
+    glutKeyboardFunc(ordinaryKeyboardControl);
     glutMainLoop();
 
     return 0;
