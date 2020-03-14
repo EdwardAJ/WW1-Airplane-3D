@@ -5,6 +5,7 @@
 #endif
 
 #include "propeller.h"
+#include "utils.h"
 
 void drawPropeller() {
     drawPropellerHorizontal();
@@ -13,157 +14,25 @@ void drawPropeller() {
 }
 
 void drawPropellerHorizontal() {
-    glBegin(GL_QUADS);
-    /* Patokan dari kotak warna pink */
-    /* x : depan +, belakang - */
-    /* y : atas +, bawah - */
-    /* z : kiri +, kanan - */
+    double Xmin = -2.25, Xmax = -2.50;
+    double Ymin = -0.25, Ymax =  0.25;
+    double Zmin = -1.00, Zmax =  1.00;
 
-    /* Kotak hijau (atas) */
-    glColor3f(0.5, 1.5, 0.5);
-    glVertex3f( -2.25, 0.25, -1);
-    glVertex3f( -2.50, 0.25, -1);
-    glVertex3f( -2.50, 0.25,  1);
-    glVertex3f( -2.25, 0.25,  1);
-
-    /* Kotak oren (bawah) */
-    glColor3f(1.5, -2.50, 0.5);
-    glVertex3f( -2.25, -0.25,  1);
-    glVertex3f( -2.50, -0.25,  1);
-    glVertex3f( -2.50, -0.25, -1);
-    glVertex3f( -2.25, -0.25, -1);
-
-    /* Kotak merah (kiri) */
-    glColor3f(1.5, 0.5, 0.5);
-    glVertex3f( -2.25,  0.25, 1);
-    glVertex3f( -2.50,  0.25, 1);
-    glVertex3f( -2.50, -0.25, 1);
-    glVertex3f( -2.25, -0.25, 1);
-
-    /* Kotak kuning (kanan) */
-    glColor3f(1.5, 1.5, 0.5);
-    glVertex3f( -2.25, -0.25, -1);
-    glVertex3f( -2.50, -0.25, -1);
-    glVertex3f( -2.50,  0.25, -1);
-    glVertex3f( -2.25,  0.25, -1);
-
-    /* Kotak biru (belakang) */
-    glColor3f(0.5, 0.5, 1.5);
-    glVertex3f( -2.50,  0.25,  1);
-    glVertex3f( -2.50,  0.25, -1);
-    glVertex3f( -2.50, -0.25, -1);
-    glVertex3f( -2.50, -0.25,  1);
-
-    /* Kotak pink (depan) */
-    glColor3f(1.5, 0.5, 1.5);
-    glVertex3f( -2.25,  0.25, -1);
-    glVertex3f( -2.25,  0.25,  1);
-    glVertex3f( -2.25, -0.25,  1);
-    glVertex3f( -2.25, -0.25, -1);
-
-    glEnd();
+    drawShape(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax);
 }
 
 void drawPropellerVertical() {
-    glBegin(GL_QUADS);
-    /* Patokan dari kotak warna pink */
-    /* x : depan +, belakang - */
-    /* y : atas +, bawah - */
-    /* z : kiri +, kanan - */
+    double Xmin = -2.25, Xmax = -2.50;
+    double Ymin = -1.00, Ymax =  1.00;
+    double Zmin = -0.25, Zmax =  0.25;
 
-    /* Kotak hijau (atas) */
-    glColor3f(0.5, 1.5, 0.5);
-    glVertex3f( -2.25, 1.00, -0.25);
-    glVertex3f( -2.50, 1.00, -0.25);
-    glVertex3f( -2.50, 1.00,  0.25);
-    glVertex3f( -2.25, 1.00,  0.25);
-
-    /* Kotak oren (bawah) */
-    glColor3f(1.5, -2.50, 0.5);
-    glVertex3f( -2.25, -1.00,  0.25);
-    glVertex3f( -2.50, -1.00,  0.25);
-    glVertex3f( -2.50, -1.00, -0.25);
-    glVertex3f( -2.25, -1.00, -0.25);
-
-    /* Kotak merah (kiri) */
-    glColor3f(1.5, 0.5, 0.5);
-    glVertex3f( -2.25,  1.00, 0.25);
-    glVertex3f( -2.50,  1.00, 0.25);
-    glVertex3f( -2.50, -1.00, 0.25);
-    glVertex3f( -2.25, -1.00, 0.25);
-
-    /* Kotak kuning (kanan) */
-    glColor3f(1.5, 1.5, 0.5);
-    glVertex3f( -2.25, -1.00, -0.25);
-    glVertex3f( -2.50, -1.00, -0.25);
-    glVertex3f( -2.50,  1.00, -0.25);
-    glVertex3f( -2.25,  1.00, -0.25);
-
-    /* Kotak biru (belakang) */
-    glColor3f(0.5, 0.5, 1.5);
-    glVertex3f( -2.50,  1.00,  0.25);
-    glVertex3f( -2.50,  1.00, -0.25);
-    glVertex3f( -2.50, -1.00, -0.25);
-    glVertex3f( -2.50, -1.00,  0.25);
-
-    /* Kotak pink (depan) */
-    glColor3f(1.5, 0.5, 1.5);
-    glVertex3f( -2.25,  1.00, -0.25);
-    glVertex3f( -2.25,  1.00,  0.25);
-    glVertex3f( -2.25, -1.00,  0.25);
-    glVertex3f( -2.25, -1.00, -0.25);
-
-    glEnd();
+    drawShape(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax);
 }
 
 void drawPropellerConnector() {
-    glBegin(GL_QUADS);
-    /* Patokan dari kotak warna pink */
-    /* x : depan +, belakang - */
-    /* y : atas +, bawah - */
-    /* z : kiri +, kanan - */
+    double Xmin = -2.25, Xmax = -2.00;
+    double Ymin = -0.25, Ymax =  0.25;
+    double Zmin = -0.25, Zmax =  0.25;
 
-    /* Kotak hijau (atas) */
-    glColor3f(0.5, 1.5, 0.5);
-    glVertex3f( -2.00, 0.25, -0.25);
-    glVertex3f( -2.25, 0.25, -0.25);
-    glVertex3f( -2.25, 0.25,  0.25);
-    glVertex3f( -2.00, 0.25,  0.25);
-
-    /* Kotak oren (bawah) */
-    glColor3f(1.5, -2.50, 0.5);
-    glVertex3f( -2.00, -0.25,  0.25);
-    glVertex3f( -2.25, -0.25,  0.25);
-    glVertex3f( -2.25, -0.25, -0.25);
-    glVertex3f( -2.00, -0.25, -0.25);
-
-    /* Kotak merah (kiri) */
-    glColor3f(1.5, 0.5, 0.5);
-    glVertex3f( -2.00,  0.25, 0.25);
-    glVertex3f( -2.25,  0.25, 0.25);
-    glVertex3f( -2.25, -0.25, 0.25);
-    glVertex3f( -2.00, -0.25, 0.25);
-
-    /* Kotak kuning (kanan) */
-    glColor3f(1.5, 1.5, 0.5);
-    glVertex3f( -2.00, -0.25, -0.25);
-    glVertex3f( -2.25, -0.25, -0.25);
-    glVertex3f( -2.25,  0.25, -0.25);
-    glVertex3f( -2.00,  0.25, -0.25);
-
-    /* Kotak biru (belakang) */
-    glColor3f(0.5, 0.5, 1.5);
-    glVertex3f( -2.25,  0.25,  0.25);
-    glVertex3f( -2.25,  0.25, -0.25);
-    glVertex3f( -2.25, -0.25, -0.25);
-    glVertex3f( -2.25, -0.25,  0.25);
-
-    /* Kotak pink (depan) */
-    glColor3f(1.5, 0.5, 1.5);
-    glVertex3f( -2.00,  0.25, -0.25);
-    glVertex3f( -2.00,  0.25,  0.25);
-    glVertex3f( -2.00, -0.25,  0.25);
-    glVertex3f( -2.00, -0.25, -0.25);
-
-    glEnd();
+    drawShape(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax);
 }

@@ -6,8 +6,8 @@
 
 #include <cmath>
 #include <iostream>
-#include "utils.cpp"
 
+#include "parts/utils.h"
 #include "parts/body.h"
 #include "parts/propeller.h"
 #include "parts/wingsmain.h"
@@ -111,55 +111,11 @@ void display() {
 }
 
 void draw3D () {
-    glBegin(GL_QUADS);
-    /* Patokan dari kotak warna pink */
-    /* x : depan +, belakang - */
-    /* y : atas +, bawah - */
-    /* z : kiri +, kanan - */
+    double Xmin = -2.25, Xmax = -2.50;
+    double Ymin = -0.25, Ymax =  0.25;
+    double Zmin = -1.00, Zmax =  1.00;
 
-    /* Kotak hijau (atas) */
-    glColor3f(0.5, 1.5, 0.5);
-    glVertex3f( -2.25, 0.25, -1);
-    glVertex3f( -2.50, 0.25, -1);
-    glVertex3f( -2.50, 0.25,  1);
-    glVertex3f( -2.25, 0.25,  1);
-
-    /* Kotak oren (bawah) */
-    glColor3f(1.5, -2.50, 0.5);
-    glVertex3f( -2.25, -0.25,  1);
-    glVertex3f( -2.50, -0.25,  1);
-    glVertex3f( -2.50, -0.25, -1);
-    glVertex3f( -2.25, -0.25, -1);
-
-    /* Kotak merah (kiri) */
-    glColor3f(1.5, 0.5, 0.5);
-    glVertex3f( -2.25,  0.25, 1);
-    glVertex3f( -2.50,  0.25, 1);
-    glVertex3f( -2.50, -0.25, 1);
-    glVertex3f( -2.25, -0.25, 1);
-
-    /* Kotak kuning (kanan) */
-    glColor3f(1.5, 1.5, 0.5);
-    glVertex3f( -2.25, -0.25, -1);
-    glVertex3f( -2.50, -0.25, -1);
-    glVertex3f( -2.50,  0.25, -1);
-    glVertex3f( -2.25,  0.25, -1);
-
-    /* Kotak biru (belakang) */
-    glColor3f(0.5, 0.5, 1.5);
-    glVertex3f( -2.50,  0.25,  1);
-    glVertex3f( -2.50,  0.25, -1);
-    glVertex3f( -2.50, -0.25, -1);
-    glVertex3f( -2.50, -0.25,  1);
-
-    /* Kotak pink (depan) */
-    glColor3f(1.5, 0.5, 1.5);
-    glVertex3f( -2.25,  0.25, -1);
-    glVertex3f( -2.25,  0.25,  1);
-    glVertex3f( -2.25, -0.25,  1);
-    glVertex3f( -2.25, -0.25, -1);
-
-    glEnd();
+    drawShape(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax);
 }
 
 int main(int argc, char **argv) {

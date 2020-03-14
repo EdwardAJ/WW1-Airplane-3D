@@ -5,55 +5,12 @@
 #endif
 
 #include "body.h"
+#include "utils.h"
 
 void drawBody() {
-    glBegin(GL_QUADS);
-    /* Patokan dari kotak warna pink */
-    /* x : depan +, belakang - */
-    /* y : atas +, bawah - */
-    /* z : kiri +, kanan - */
+    double Xmin = -2.00, Xmax =  2.00;
+    double Ymin = -0.75, Ymax =  0.75;
+    double Zmin = -0.50, Zmax =  0.50;
 
-    /* Kotak hijau (atas) */
-    glColor3f(0.0, 1.0, 0.0);
-    glVertex3f( 2.0, 0.75, -0.5);
-    glVertex3f(-2.0, 0.75, -0.5);
-    glVertex3f(-2.0, 0.75,  0.5);
-    glVertex3f( 2.0, 0.75, 0.5);
-
-    /* Kotak oren (bawah) */
-    glColor3f(1.0, 0.5, 0.0);
-    glVertex3f( 2.0, -0.75,  0.5);
-    glVertex3f(-2.0, -0.75,  0.5);
-    glVertex3f(-2.0, -0.75, -0.5);
-    glVertex3f( 2.0, -0.75, -0.5);
-
-    /* Kotak merah (kiri) */
-    glColor3f(1.0, 0.0, 0.0);
-    glVertex3f( 2.0,  0.75, 0.5);
-    glVertex3f(-2.0,  0.75, 0.5);
-    glVertex3f(-2.0, -0.75, 0.5);
-    glVertex3f( 2.0, -0.75, 0.5);
-
-    /* Kotak kuning (kanan) */
-    glColor3f(1.0, 1.0, 0.0);
-    glVertex3f( 2.0, -0.75, -0.5);
-    glVertex3f(-2.0, -0.75, -0.5);
-    glVertex3f(-2.0,  0.75, -0.5);
-    glVertex3f( 2.0,  0.75, -0.5);
-
-    /* Kotak biru (belakang) */
-    glColor3f(0.0, 0.0, 1.0);
-    glVertex3f(-2.0,  0.75,  0.5);
-    glVertex3f(-2.0,  0.75, -0.5);
-    glVertex3f(-2.0, -0.75, -0.5);
-    glVertex3f(-2.0, -0.75,  0.5);
-
-    /* Kotak pink (depan) */
-    glColor3f(1.0, 0.0, 1.0);
-    glVertex3f(2.0,  0.75, -0.5);
-    glVertex3f(2.0,  0.75,  0.5);
-    glVertex3f(2.0, -0.75,  0.5);
-    glVertex3f(2.0, -0.75, -0.5);
-
-    glEnd();
+    drawShape(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax);
 }
