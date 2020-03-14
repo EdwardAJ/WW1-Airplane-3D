@@ -7,35 +7,38 @@
 #include "wingsmain.h"
 #include "utils.h"
 
-void drawSideWings() {
+void drawSideWings(double value[]) {
     /*Sayap pertama*/
-    double Xmin = -1.00, Xmax = 0.00;
-    double Ymin = -0.10, Ymax = 0.10;
-    double Zmin = -2.00, Zmax = 2.00;
+    int i = 4;
+    double Xmin = value[i * 6 + 0], Xmax = value[i * 6 + 1];
+    double Ymin = value[i * 6 + 2], Ymax = value[i * 6 + 3];
+    double Zmin = value[i * 6 + 4], Zmax = value[i * 6 + 5];
 
     drawShape(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax);
 }
 
-void drawUpperWings() {
+void drawUpperWings(double value[]) {
     /* Sayap kedua */
-    double Xmin = -1.00, Xmax = 0.00;
-    double Ymin =  0.90, Ymax = 1.10;
-    double Zmin = -2.00, Zmax = 2.00;
+    int i = 5;
+    double Xmin = value[i * 6 + 0], Xmax = value[i * 6 + 1];
+    double Ymin = value[i * 6 + 2], Ymax = value[i * 6 + 3];
+    double Zmin = value[i * 6 + 4], Zmax = value[i * 6 + 5];
 
     drawShape(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax);
 }
 
-void drawUpperWingBrace() {
+void drawUpperWingBrace(double value[]) {
     /* Konektor */
-    double Xmin = -1.00, Xmax = 0.00;
-    double Ymin = -0.75, Ymax = 1.00;
-    double Zmin = -0.10, Zmax = 0.10;
+    int i = 6;
+    double Xmin = value[i * 6 + 0], Xmax = value[i * 6 + 1];
+    double Ymin = value[i * 6 + 2], Ymax = value[i * 6 + 3];
+    double Zmin = value[i * 6 + 4], Zmax = value[i * 6 + 5];
 
     drawShape(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax);
 }
 
-void drawWingsmain() {
-    drawSideWings();
-    drawUpperWings();
-    drawUpperWingBrace();
+void drawWingsmain(double value[]) {
+    drawSideWings(value);
+    drawUpperWings(value);
+    drawUpperWingBrace(value);
 }

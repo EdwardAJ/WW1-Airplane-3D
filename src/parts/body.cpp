@@ -7,10 +7,10 @@
 #include "body.h"
 #include "utils.h"
 
-void drawBody() {
-    double Xmin = -2.00, Xmax =  2.00;
-    double Ymin = -0.75, Ymax =  0.75;
-    double Zmin = -0.50, Zmax =  0.50;
+void drawBody(double value[]) {
+    double Xmin = value[0], Xmax = value[1];
+    double Ymin = value[2], Ymax = value[3];
+    double Zmin = value[4], Zmax = value[5];
 
     drawShape(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax);
 }

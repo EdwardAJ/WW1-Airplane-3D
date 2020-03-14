@@ -9,7 +9,7 @@
 double red1 = 1.0, green1 = 0.0, blue1 = 0.0;
 double red2 = 0.0, green2 = 1.0, blue2 = 0.0;
 double red3 = 0.0, green3 = 0.0, blue3 = 1.0;
-double red4 = 1.0, green4 = 1.0, blue4 = 0.0;
+double red4 = 0.9, green4 = 0.8, blue4 = 0.0;
 double red5 = 1.0, green5 = 0.0, blue5 = 1.0;
 double red6 = 0.0, green6 = 1.0, blue6 = 1.0;
 

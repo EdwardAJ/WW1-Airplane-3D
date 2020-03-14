@@ -1,8 +1,8 @@
 #ifndef WINGSTAIL_H_INCLUDED
 #define WINGSTAIL_H_INCLUDED
 
-void drawWingstail();
-void drawWingstailHorizontal();
-void drawWingstailVertical();
+void drawWingstail(double value[]);
+void drawWingstailHorizontal(double value[]);
+void drawWingstailVertical(double value[]);
 
 #endif // WINGSTAIL_H_INCLUDED

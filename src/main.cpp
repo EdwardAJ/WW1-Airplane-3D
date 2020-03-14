@@ -4,11 +4,9 @@
 #include <GL/glut.h>
 #endif
 
-#define SPEED_FAST 10
-#define SPEED_MEDIUM 5
-#define SPEED_SLOW 1
-
+#include <fstream>
 #include <cmath>
+#include <stdlib.h>
 #include <iostream>
 
 #include "parts/utils.h"
@@ -16,6 +14,10 @@
 #include "parts/propeller.h"
 #include "parts/wingsmain.h"
 #include "parts/wingstail.h"
+
+#define SPEED_FAST 10
+#define SPEED_MEDIUM 5
+#define SPEED_SLOW 1
 
 using namespace std;
 
@@ -40,11 +42,12 @@ double fov = 55;
 double asp = width / height;
 double dist = 8.0;
 
+double value[55];
+
 void drawWindow();
 void keyboardControl(int key, int x, int y);
 void display();
 void draw3D();
-
 
 void draw3D () {
     double Xmin = -2.25, Xmax = -2.50;
@@ -252,6 +255,27 @@ void ordinaryKeyboardControl(unsigned char key, int x, int y) {
     glutPostRedisplay();
 }
 
+void removeDupWord(string str, int i) {
+   char word[10];
+   int p = 0;
+   int j = 0;
+
+   for (char x : str) {
+       if (x == ' ') {
+            value[i * 6 + j] = atof(word);
+            for (int q=0; q<10; q++) {
+                word[q] = ' ';
+            }
+            j = j + 1;
+       }
+       else {
+            word[p] = x;
+            p = p + 1;
+       }
+   }
+   value[i * 6 + j] = atof(word);
+}
+
 void displayPrintMenu() {
     cout << "Selamat datang di Kelompok Grafika Komputer!" << endl;
     cout << "Berikut ini adalah berbagai menu yang tersedia:" << endl;
@@ -298,6 +322,15 @@ void mouseControl(int button, int state, int x, int y) {
 
 
 int main(int argc, char **argv) {
+    ifstream infile;
+    string data;
+
+    infile.open("input.txt");
+    for(int i=0; i<9; i++) {
+        infile >> data;
+        removeDupWord(data,i);
+    }
+    infile.close();
 
     glutInit(&argc, argv);
     glutInitDisplayMode( GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
