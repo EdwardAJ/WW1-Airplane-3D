@@ -4,6 +4,10 @@
 #include <GL/glut.h>
 #endif
 
+#define SPEED_FAST 10
+#define SPEED_MEDIUM 5
+#define SPEED_SLOW 1
+
 #include <cmath>
 #include <iostream>
 
@@ -20,13 +24,16 @@ int th;
 int ph;
 int width = 1000;
 int height = 600;
-int movex = 0;
-int movey = 0;
+int moveWorldx = 0;
+int moveWorldy = 0;
 
-int moveUpx = 0;
-int moveUpy = 0;
-int moveUpz = 0;
+int moveCameraUpx = 0;
+int moveCameraUpy = 0;
+int moveCameraUpz = 0;
 
+int angleObjectx = 0;
+int angleObjecty = 0;
+int angleObjectz = 0;
 
 // Field of view
 double fov = 55;
@@ -52,7 +59,7 @@ void drawWindow() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(fov, asp, dist/4, dist*4);
-    glTranslatef(-movex, -movey, -movex);
+    glTranslatef(-moveWorldx, -moveWorldy, 0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
@@ -92,7 +99,7 @@ void initializeDisplay () {
 
 }
 
-void setCameraForCirclingObject() {
+void setCameraWorld() {
     double thDegree = getDegreeFromRadian(th);
     double phDegree = getDegreeFromRadian(ph);
 
@@ -105,13 +112,23 @@ void setCameraForCirclingObject() {
     double originYcoord = 0;
     double originZcoord = 0;
 
-    double upXcoord = 0 + moveUpx;
-    double upYcoord = 1 + moveUpy;
-    double upZcoord = 0 + moveUpz;
+    double upXcoord = 0 + moveCameraUpx;
+    double upYcoord = 1 + moveCameraUpy;
+    double upZcoord = 0 + moveCameraUpz;
 
     gluLookAt(eyeXcoord, eyeYcoord, eyeZcoord,
             originXcoord, originYcoord, originZcoord,upXcoord, upYcoord, upZcoord
     );
+}
+
+void drawAirplane() {
+    glRotatef(angleObjectx, 1, 0, 0);
+    glRotatef(angleObjecty, 0, 1, 0);
+    glRotatef(angleObjectz, 0, 0, 1);
+    drawBody();
+    drawPropeller();
+    drawWingstail();
+    drawWingsmain();
 }
 
 void drawAndFlush() {
@@ -119,36 +136,51 @@ void drawAndFlush() {
     drawPropeller();
     drawWingstail();
     drawWingsmain();
+    drawAirplane();
     glFlush();
     glutSwapBuffers();
 }
 
 
-void displayCirclingObject() {
+void displayWorld() {
     initializeDisplay();
-    setCameraForCirclingObject();
+    setCameraWorld();
     drawAndFlush();
+}
+
+void resetView() {
+    th = 0;
+    ph = 0;
+    moveWorldx = 0;
+    moveWorldy = 0;
+
+    moveCameraUpx = 0;
+    moveCameraUpy = 0;
+    moveCameraUpz = 0;
+
+    angleObjectx = 0;
+    angleObjecty = 0;
+    angleObjectz = 0;
 }
 
 void specialKeyboardControl (int key, int x, int y) {
     switch (key) {
         case GLUT_KEY_RIGHT:
-            th = th + 5;
+            th = th + SPEED_FAST;
             break;
         case GLUT_KEY_LEFT:
-            th = th - 5;
+            th = th - SPEED_FAST;
             break;
         case GLUT_KEY_UP:
-            ph = ph + 5;
+            ph = ph + SPEED_FAST;
             break;
         case GLUT_KEY_DOWN:
-            ph = ph - 5;
+            ph = ph - SPEED_FAST;
             break;
         case GLUT_KEY_F1:
             exit(0);
             break;
     }
-    displayCirclingObject();
 
     th = th % 360;
     ph = ph % 360;
@@ -160,40 +192,58 @@ void specialKeyboardControl (int key, int x, int y) {
 void ordinaryKeyboardControl(unsigned char key, int x, int y) {
     switch (key) {
         case 'x':
-            fov = fov + 5;
+            fov = fov + SPEED_MEDIUM;
             break;
         case 'z':
-            fov = fov - 5;
+            fov = fov - SPEED_MEDIUM;
             break;
         case 'a':
-            movex += 1;
+            moveWorldx -= SPEED_SLOW;
             break;
         case 'd':
-            movex -= 1;
+            moveWorldx += SPEED_SLOW;
             break;
         case 'w':
-            movey += 1;
+            moveWorldy += SPEED_SLOW;
             break;
         case 's':
-            movey -= 1;
+            moveWorldy -= SPEED_SLOW;
             break;
         case 'i':
-            moveUpy += 1;
+            moveCameraUpy += SPEED_MEDIUM;
             break;
         case 'k':
-            moveUpy -= 1;
+            moveCameraUpy -= SPEED_MEDIUM;
             break;
         case 'j':
-            moveUpx -= 1;
+            moveCameraUpx -= SPEED_MEDIUM;
             break;
         case 'l':
-            moveUpx += 1;
+            moveCameraUpx += SPEED_MEDIUM;
             break;
         case 'm':
-            moveUpz -= 1;
+            moveCameraUpz -= SPEED_MEDIUM;
             break;
         case 'n':
-            moveUpz += 1;
+            moveCameraUpz += SPEED_MEDIUM;
+            break;
+        case '1':
+            angleObjectx += SPEED_FAST;
+            break;
+        case '2':
+            angleObjectx -= SPEED_FAST;
+            break;
+        case '3':
+            angleObjecty += SPEED_FAST;
+            break;
+        case '4':
+            angleObjecty -= SPEED_FAST;
+            break;
+        case '5':
+            angleObjectz += SPEED_FAST;
+            break;
+        case '6':
+            angleObjectz -= SPEED_FAST;
             break;
     }
 
@@ -201,15 +251,63 @@ void ordinaryKeyboardControl(unsigned char key, int x, int y) {
     glutPostRedisplay();
 }
 
+void displayPrintMenu() {
+    cout << "Selamat datang di Kelompok Grafika Komputer!" << endl;
+    cout << "Berikut ini adalah berbagai menu yang tersedia:" << endl;
+    cout << "-------------------------------------------------" << endl;
+    cout << "MOVE WORLD: " << endl;
+    cout << "Key W, A, S, dan D digunakan untuk menggerakan kamera pada sumbu horizontal dan vertikal." << endl;
+    cout << "-------------------------------------------------" << endl;
+    cout << "ROTATE CAMERA'S VECTOR UP: " << endl;
+    cout << "Key J dan L digunakan untuk memutar vector up kamera pada sumbu -X dan X" << endl;
+    cout << "Key I dan K digunakan untuk memutar vector up kamera pada sumbu Y dan -Y" << endl;
+    cout << "Key M dan N digunakan untuk memutar vector up kamera pada sumbu -Z dan Z" << endl;
+    cout << "-------------------------------------------------" << endl;
+    cout << "CAMERA ZOOM: " << endl;
+    cout << "Key X dan Z digunakan untuk menggerakan kamera pada sumbu -Z dan Z" << endl;
+    cout << "-------------------------------------------------" << endl;
+    cout << "ROTATE CAMERA IN CIRCLE PATH: " << endl;
+    cout << "Key ArrowLeft dan ArrowRight untuk memutar kamera secara counterclockwise dan clockwise" << endl;
+    cout << "-------------------------------------------------" << endl;
+    cout << "ROTATE OBJECT: " << endl;
+    cout << "Key 1 dan 2 digunakan untuk memutar object pada sumbu X dan -X" << endl;
+    cout << "Key 3 dan 4 digunakan untuk memutar vector up kamera pada sumbu Y dan -Y" << endl;
+    cout << "Key 5 dan 6 digunakan untuk memutar vector up kamera pada sumbu Z dan -Z" << endl;
+    cout << "-------------------------------------------------" << endl;
+    cout << "SHADER: " << endl;
+    cout << "Key Enter digunakan untuk memberi atau melepas shader warna" << endl;
+    cout << "-------------------------------------------------" << endl;
+    cout << "MERESET DEFAULT VIEW DAN MENGELUARKAN HELP MENU: " << endl;
+    cout << "Tekan tombol klik kiri untuk mereset view ke state semula" << endl;
+    cout << "-------------------------------------------------" << endl;
+}
+
+void mouseControl(int button, int state, int x, int y) {
+    switch(button) {
+        case GLUT_LEFT_BUTTON:
+            if (state == GLUT_DOWN) {
+                resetView();
+                displayPrintMenu();
+                drawWindow();
+                glutPostRedisplay();
+            }
+        break;
+    }
+}
+
+
 int main(int argc, char **argv) {
 
     glutInit(&argc, argv);
     glutInitDisplayMode( GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowSize(width, height);
     glutCreateWindow("World War 1 Airplane Showcase");
-    glutDisplayFunc(displayCirclingObject);
+    glutDisplayFunc(displayWorld);
     glutSpecialFunc(specialKeyboardControl);
     glutKeyboardFunc(ordinaryKeyboardControl);
+    glutMouseFunc(mouseControl);
+
+    displayPrintMenu();
     glutMainLoop();
 
     return 0;
