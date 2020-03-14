@@ -71,6 +71,7 @@ void initializeDisplay () {
     glEnable(GL_DEPTH_TEST);
     glLoadIdentity();
 
+    bool isShadingOn = true;
     /* Lightning */
     glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
     glEnable(GL_LIGHTING);
@@ -80,22 +81,22 @@ void initializeDisplay () {
 
     GLfloat ambientLight[] = {0.3, 0.3, 0.3, 1.0};
     GLfloat diffuseLight[] = {0.7, 0.7, 0.7, 1.0};
-    GLfloat specularLight[] = {1.0, 1.0, 1.0, 1.0};
+    GLfloat specularLight[] = {0.0, 1.0, 0.0, 1.0};
 
     /* Lightning Position */
     GLfloat positionLight[] = {2.5, 2.5, 2.0, 1.0};
     glLightfv(GL_LIGHT0, GL_POSITION, positionLight);
-    GLfloat positionLight2[] = {-2.5, -2.5, -2.0, 1.0};
-    glLightfv(GL_LIGHT1, GL_POSITION, positionLight2);
 
     /* Set material */
-    GLfloat a[] = {0.3, 0.3, 0.3, 1.0};
-    GLfloat d[] = {0.7, 0.7, 0.7, 1.0};
-    GLfloat s[] = {1.0, 1.0, 1.0, 1.0};
-    glMaterialfv(GL_FRONT, GL_AMBIENT, a);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, d);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, s);
-    glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
+    if (isShadingOn) {
+        GLfloat a[] = {0.3, 0.3, 0.3, 1.0};
+        GLfloat d[] = {0.7, 0.7, 0.7, 1.0};
+        GLfloat s[] = {1.0, 1.0, 1.0, 1.0};
+        glMaterialfv(GL_FRONT, GL_AMBIENT, a);
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, d);
+        glMaterialfv(GL_FRONT, GL_SPECULAR, s);
+        glMaterialf(GL_FRONT, GL_SHININESS, 100.0);
+    }
 
 }
 
