@@ -53,17 +53,27 @@ void display() {
     glEnable(GL_DEPTH_TEST);
     glLoadIdentity();
 
-    double degree = getDegreeFromRadian(th);
-    double eyeXcoord = dist * cos(degree);
-    double eyeYcoord = 0;
-    double eyeZcoord = dist * sin(degree);
+    double thDegree = getDegreeFromRadian(th);
+    double phDegree = getDegreeFromRadian(ph);
 
-    double originXcoord = -1 * cos(degree);
-    double originYcoord = 0;
-    double originZcoord = -1 * sin(degree);
+    // double eyeXcoord = dist * cos(thDegree) * cos(phDegree);
+    // double eyeYcoord = 0;
+    // double eyeZcoord = dist * sin(thDegree) * cos(phDegree);
+
+    double eyeXcoord = dist * sin(thDegree) * cos(phDegree);
+    double eyeYcoord = dist * cos(thDegree) * sin(phDegree);
+    double eyeZcoord = dist * cos(thDegree) * cos(phDegree);
+
+    // double originXcoord = -1 * cos(thDegree);
+    // double originXcoord = -1 * sin(thDegree) * cos(phDegree);
+    double originXcoord = sin(thDegree) * cos(phDegree);
+    double originYcoord = cos(thDegree) * sin(phDegree);
+    double originZcoord = cos(thDegree) * cos(phDegree);
+    // double originZcoord = -1 * sin(thDegree);
+    // double originZcoord = -1 * cos(thDegree) * cos(phDegree);
     
     double upXcoord = 0;
-    double upYcoord = 1;
+    double upYcoord = cos(phDegree);
     double upZcoord = 0;
 
     gluLookAt(eyeXcoord, eyeYcoord, eyeZcoord,
@@ -78,6 +88,7 @@ void display() {
 
 
 int main(int argc, char **argv) {
+
     glutInit(&argc, argv);
     glutInitDisplayMode( GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowSize(width, height);
