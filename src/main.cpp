@@ -27,7 +27,6 @@ double dist = 8.0;
 
 void drawWindow();
 void keyboardControl(int key, int x, int y);
-void keyboardBasicControl(unsigned char key, int x, int y);
 void display();
 void draw3D();
 
@@ -35,7 +34,7 @@ void drawWindow() {
     // Initialize Projection Matrix
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(fov, asp, dist/4, dist*4);
+    gluPerspective(fov, asp, dist/100, dist*4);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
@@ -102,10 +101,10 @@ void display() {
     );
 
     drawBody();
-    draw3D();
-    // drawPropeller();
-    // drawWingsmain();
-    // drawWingstail();
+    //draw3D();
+    drawPropeller();
+    //drawWingsmain();
+    drawWingstail();
 
     glFlush();
     glutSwapBuffers();
@@ -119,46 +118,46 @@ void draw3D () {
     /* z : kiri +, kanan - */
 
     /* Kotak hijau (atas) */
-    glColor3f(0.0, 1.0, 0.0);
-    glVertex3f( 2.0, 0.75, -0.5);
-    glVertex3f(-2.0, 0.75, -0.5);
-    glVertex3f(-2.0, 0.75,  0.5);
-    glVertex3f( 2.0, 0.75, 0.5);
+    glColor3f(0.5, 1.5, 0.5);
+    glVertex3f( -2.25, 0.25, -1);
+    glVertex3f( -2.50, 0.25, -1);
+    glVertex3f( -2.50, 0.25,  1);
+    glVertex3f( -2.25, 0.25,  1);
 
     /* Kotak oren (bawah) */
-    glColor3f(1.0, 0.5, 0.0);
-    glVertex3f( 2.0, -0.75,  0.5);
-    glVertex3f(-2.0, -0.75,  0.5);
-    glVertex3f(-2.0, -0.75, -0.5);
-    glVertex3f( 2.0, -0.75, -0.5);
+    glColor3f(1.5, -2.50, 0.5);
+    glVertex3f( -2.25, -0.25,  1);
+    glVertex3f( -2.50, -0.25,  1);
+    glVertex3f( -2.50, -0.25, -1);
+    glVertex3f( -2.25, -0.25, -1);
 
     /* Kotak merah (kiri) */
-    glColor3f(1.0, 0.0, 0.0);
-    glVertex3f( 2.0,  0.75, 0.5);
-    glVertex3f(-2.0,  0.75, 0.5);
-    glVertex3f(-2.0, -0.75, 0.5);
-    glVertex3f( 2.0, -0.75, 0.5);
+    glColor3f(1.5, 0.5, 0.5);
+    glVertex3f( -2.25,  0.25, 1);
+    glVertex3f( -2.50,  0.25, 1);
+    glVertex3f( -2.50, -0.25, 1);
+    glVertex3f( -2.25, -0.25, 1);
 
     /* Kotak kuning (kanan) */
-    glColor3f(1.0, 1.0, 0.0);
-    glVertex3f( 2.0, -0.75, -0.5);
-    glVertex3f(-2.0, -0.75, -0.5);
-    glVertex3f(-2.0,  0.75, -0.5);
-    glVertex3f( 2.0,  0.75, -0.5);
+    glColor3f(1.5, 1.5, 0.5);
+    glVertex3f( -2.25, -0.25, -1);
+    glVertex3f( -2.50, -0.25, -1);
+    glVertex3f( -2.50,  0.25, -1);
+    glVertex3f( -2.25,  0.25, -1);
 
     /* Kotak biru (belakang) */
-    glColor3f(0.0, 0.0, 1.0);
-    glVertex3f(-2.0,  0.75,  0.5);
-    glVertex3f(-2.0,  0.75, -0.5);
-    glVertex3f(-2.0, -0.75, -0.5);
-    glVertex3f(-2.0, -0.75,  0.5);
+    glColor3f(0.5, 0.5, 1.5);
+    glVertex3f( -2.50,  0.25,  1);
+    glVertex3f( -2.50,  0.25, -1);
+    glVertex3f( -2.50, -0.25, -1);
+    glVertex3f( -2.50, -0.25,  1);
 
     /* Kotak pink (depan) */
-    glColor3f(1.0, 0.0, 1.0);
-    glVertex3f(2.0,  0.75, -0.5);
-    glVertex3f(2.0,  0.75,  0.5);
-    glVertex3f(2.0, -0.75,  0.5);
-    glVertex3f(2.0, -0.75, -0.5);
+    glColor3f(1.5, 0.5, 1.5);
+    glVertex3f( -2.25,  0.25, -1);
+    glVertex3f( -2.25,  0.25,  1);
+    glVertex3f( -2.25, -0.25,  1);
+    glVertex3f( -2.25, -0.25, -1);
 
     glEnd();
 }
