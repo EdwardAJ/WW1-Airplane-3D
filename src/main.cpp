@@ -1,9 +1,20 @@
+#ifdef __APPLE__
 #include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+
 #include <cmath>
 #include <iostream>
 #include "utils.cpp"
 
+#include "parts/body.h"
+#include "parts/propeller.h"
+#include "parts/wingsmain.h"
+#include "parts/wingstail.h"
+
 using namespace std;
+
 // Global variables
 int th;
 int ph;
@@ -13,6 +24,12 @@ int height = 600;
 double fov = 55;
 double asp = width / height;
 double dist = 8.0;
+
+void drawWindow();
+void keyboardControl(int key, int x, int y);
+void keyboardBasicControl(unsigned char key, int x, int y);
+void display();
+void draw3D();
 
 void drawWindow() {
     // Initialize Projection Matrix
@@ -36,6 +53,9 @@ void keyboardControl (int key, int x, int y) {
             break;
         case GLUT_KEY_DOWN:
             ph = ph - 5;
+            break;
+        case GLUT_KEY_F1:
+            exit(0);
             break;
     }
 
@@ -81,13 +101,17 @@ void display() {
             upXcoord, upYcoord, upZcoord
     );
 
-    drawCube3D();
+    drawBody();
+    draw3D();
+    // drawPropeller();
+    // drawWingsmain();
+    // drawWingstail();
+
     glFlush();
     glutSwapBuffers();
 }
 
 void draw3D () {
-
     glBegin(GL_QUADS);
     /* Patokan dari kotak warna pink */
     /* x : depan +, belakang - */

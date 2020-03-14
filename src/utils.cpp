@@ -1,4 +1,8 @@
+#ifdef __APPLE__
 #include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
 
 double getDegreeFromRadian(double degree) {
     return degree * 3.141592653589793 / 180.0;
