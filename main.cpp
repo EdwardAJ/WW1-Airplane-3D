@@ -1,6 +1,7 @@
 #include <GLUT/glut.h>
 #include <cmath>
 #include <iostream>
+#include "utils.cpp"
 
 using namespace std;
 // Global variables
@@ -36,19 +37,19 @@ void keyboardControl (int key, int x, int y) {
         case GLUT_KEY_DOWN:
             ph = ph - 5;
             break;
-        
-        th = th % 360;
-        ph = ph % 360;
-
-        drawWindow();
-        glutPostRedisplay();
     }
+
+    th = th % 360;
+    ph = ph % 360;
+
+    drawWindow();
+    glutPostRedisplay();
 }
 
 void display() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
     glLoadIdentity();
 
@@ -71,62 +72,19 @@ void display() {
     );
 
     drawCube3D();
-   
+    glFlush();
+    glutSwapBuffers();
 }
-
-
-void drawCube3D () {
-
-    glBegin(GL_QUADS);
-
-    glColor3f(0.0, 1.0, 0.0);
-    glVertex3f( 1.0, 1.0, -1.0);
-    glVertex3f(-1.0, 1.0, -1.0);
-    glVertex3f(-1.0, 1.0,  1.0);
-    glVertex3f( 1.0, 1.0, 1.0);
-
-    glColor3f(1.0, 0.5, 0.0);
-    glVertex3f( 1.0, -1.0,  1.0);
-    glVertex3f(-1.0, -1.0,  1.0);
-    glVertex3f(-1.0, -1.0, -1.0);
-    glVertex3f( 1.0, -1.0, -1.0);
-
-    glColor3f(1.0, 0.0, 0.0);
-    glVertex3f( 1.0,  1.0, 1.0);
-    glVertex3f(-1.0,  1.0, 1.0);
-    glVertex3f(-1.0, -1.0, 1.0);
-    glVertex3f( 1.0, -1.0, 1.0);
-
-    glColor3f(1.0, 1.0, 0.0);
-    glVertex3f( 1.0, -1.0, -1.0);
-    glVertex3f(-1.0, -1.0, -1.0);
-    glVertex3f(-1.0,  1.0, -1.0);
-    glVertex3f( 1.0,  1.0, -1.0);
-
-    glColor3f(0.0, 0.0, 1.0);
-    glVertex3f(-1.0,  1.0,  1.0);
-    glVertex3f(-1.0,  1.0, -1.0);
-    glVertex3f(-1.0, -1.0, -1.0);
-    glVertex3f(-1.0, -1.0,  1.0);
-
-    glColor3f(1.0, 0.0, 1.0);
-    glVertex3f(1.0,  1.0, -1.0);
-    glVertex3f(1.0,  1.0,  1.0);
-    glVertex3f(1.0, -1.0,  1.0);
-    glVertex3f(1.0, -1.0, -1.0);
-
-    glEnd();
-}
-
 
 
 int main(int argc, char **argv) {
-    
     glutInit(&argc, argv);
-    glutInitDisplayMode(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
+    glutInitDisplayMode( GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowSize(width, height);
     glutCreateWindow("World War 1 Airplane Showcase");
     glutDisplayFunc(display);
     glutSpecialFunc(keyboardControl);
     glutMainLoop();
+
+    return 0;
 }
