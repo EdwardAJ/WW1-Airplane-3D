@@ -7,6 +7,7 @@
 #include <fstream>
 #include <cmath>
 #include <stdlib.h>
+#include <string>
 #include <iostream>
 
 #include "parts/utils.h"
@@ -129,10 +130,10 @@ void drawAirplane() {
     glRotatef(angleObjectx, 1, 0, 0);
     glRotatef(angleObjecty, 0, 1, 0);
     glRotatef(angleObjectz, 0, 0, 1);
-    drawBody();
-    drawPropeller();
-    drawWingstail();
-    drawWingsmain();
+    drawBody(value);
+    drawPropeller(value);
+    drawWingstail(value);
+    drawWingsmain(value);
 }
 
 void drawAndFlush() {
@@ -256,24 +257,26 @@ void ordinaryKeyboardControl(unsigned char key, int x, int y) {
 }
 
 void removeDupWord(string str, int i) {
-   char word[10];
+//    char word[10];
    int p = 0;
    int j = 0;
+   size_t sz;
 
-   for (char x : str) {
-       if (x == ' ') {
-            value[i * 6 + j] = atof(word);
-            for (int q=0; q<10; q++) {
-                word[q] = ' ';
-            }
-            j = j + 1;
-       }
-       else {
-            word[p] = x;
-            p = p + 1;
+   string word = "";
+   for (auto x : str) 
+   { 
+       if (x == ' ') 
+       { 
+           value[i * 6 + j] = stod(word, &sz);
+           word = ""; 
+           j++;
+       } 
+       else
+       { 
+           word = word + x;
        }
    }
-   value[i * 6 + j] = atof(word);
+   value[i * 6 + j] = stod(word, &sz);
 }
 
 void displayPrintMenu() {
@@ -324,12 +327,22 @@ void mouseControl(int button, int state, int x, int y) {
 int main(int argc, char **argv) {
     ifstream infile;
     string data;
+    int i = 0;
 
     infile.open("input.txt");
-    for(int i=0; i<9; i++) {
-        infile >> data;
+    while (infile) {
+        getline(infile, data);
+        cout << "String: " << data << endl;
         removeDupWord(data,i);
+        i = i + 1;
     }
+
+    // while (line.length() != 0) {
+    //     cout << "Enter text line: " << endl;	
+    //     getline(cin, line);
+    //     result = result + " " + line;
+    // }
+    
     infile.close();
 
     glutInit(&argc, argv);
