@@ -1,9 +1,11 @@
 .DS_Store
 comprun.sh
+compileall.sh
 Project 1.pdf
 src/bin/
 src/obj/
 src/src.cbp
-src/src.depend
+src.depend
 src/src.layout
-src/example.cpp
+src/src.cscope_file_list
+a.out

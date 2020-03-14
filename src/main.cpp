@@ -257,7 +257,6 @@ void ordinaryKeyboardControl(unsigned char key, int x, int y) {
 }
 
 void removeDupWord(string str, int i) {
-//    char word[10];
    int p = 0;
    int j = 0;
    size_t sz;
