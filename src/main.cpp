@@ -103,8 +103,8 @@ void display() {
     drawBody();
     //draw3D();
     drawPropeller();
-    //drawWingsmain();
     drawWingstail();
+    drawWingsmain();
 
     glFlush();
     glutSwapBuffers();
