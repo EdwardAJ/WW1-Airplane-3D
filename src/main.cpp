@@ -137,10 +137,10 @@ void drawAirplane() {
 }
 
 void drawAndFlush() {
-    drawBody();
-    drawPropeller();
-    drawWingstail();
-    drawWingsmain();
+    //drawBody();
+    //drawPropeller();
+    //drawWingstail();
+    //drawWingsmain();
     drawAirplane();
     glFlush();
     glutSwapBuffers();
@@ -262,16 +262,16 @@ void removeDupWord(string str, int i) {
    size_t sz;
 
    string word = "";
-   for (auto x : str) 
-   { 
-       if (x == ' ') 
-       { 
+   for (auto x : str)
+   {
+       if (x == ' ')
+       {
            value[i * 6 + j] = stod(word, &sz);
-           word = ""; 
+           word = "";
            j++;
-       } 
+       }
        else
-       { 
+       {
            word = word + x;
        }
    }
@@ -337,11 +337,11 @@ int main(int argc, char **argv) {
     }
 
     // while (line.length() != 0) {
-    //     cout << "Enter text line: " << endl;	
+    //     cout << "Enter text line: " << endl;
     //     getline(cin, line);
     //     result = result + " " + line;
     // }
-    
+
     infile.close();
 
     glutInit(&argc, argv);
