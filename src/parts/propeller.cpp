@@ -7,32 +7,35 @@
 #include "propeller.h"
 #include "utils.h"
 
-void drawPropeller() {
-    drawPropellerHorizontal();
-    drawPropellerVertical();
-    drawPropellerConnector();
+void drawPropeller(double value[]) {
+    drawPropellerHorizontal(value);
+    drawPropellerVertical(value);
+    drawPropellerConnector(value);
 }
 
-void drawPropellerHorizontal() {
-    double Xmin = -2.25, Xmax = -2.50;
-    double Ymin = -0.25, Ymax =  0.25;
-    double Zmin = -1.00, Zmax =  1.00;
+void drawPropellerHorizontal(double value[]) {
+    int i = 1;
+    double Xmin = value[i * 6 + 0], Xmax = value[i * 6 + 1];
+    double Ymin = value[i * 6 + 2], Ymax = value[i * 6 + 3];
+    double Zmin = value[i * 6 + 4], Zmax = value[i * 6 + 5];
 
     drawShape(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax);
 }
 
-void drawPropellerVertical() {
-    double Xmin = -2.25, Xmax = -2.50;
-    double Ymin = -1.00, Ymax =  1.00;
-    double Zmin = -0.25, Zmax =  0.25;
+void drawPropellerVertical(double value[]) {
+    int i = 2;
+    double Xmin = value[i * 6 + 0], Xmax = value[i * 6 + 1];
+    double Ymin = value[i * 6 + 2], Ymax = value[i * 6 + 3];
+    double Zmin = value[i * 6 + 4], Zmax = value[i * 6 + 5];
 
     drawShape(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax);
 }
 
-void drawPropellerConnector() {
-    double Xmin = -2.25, Xmax = -2.00;
-    double Ymin = -0.25, Ymax =  0.25;
-    double Zmin = -0.25, Zmax =  0.25;
+void drawPropellerConnector(double value[]) {
+    int i = 3;
+    double Xmin = value[i * 6 + 0], Xmax = value[i * 6 + 1];
+    double Ymin = value[i * 6 + 2], Ymax = value[i * 6 + 3];
+    double Zmin = value[i * 6 + 4], Zmax = value[i * 6 + 5];
 
     drawShape(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax);
 }

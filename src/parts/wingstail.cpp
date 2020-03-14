@@ -7,23 +7,25 @@
 #include "wingstail.h"
 #include "utils.h"
 
-void drawWingstail() {
-    drawWingstailVertical();
-    drawWingstailHorizontal();
+void drawWingstail(double value[]) {
+    drawWingstailVertical(value);
+    drawWingstailHorizontal(value);
 }
 
-void drawWingstailVertical() {
-    double Xmin =  1.00, Xmax = 2.00;
-    double Ymin =  0.75, Ymax = 1.25;
-    double Zmin = -0.25, Zmax = 0.25;
+void drawWingstailVertical(double value[]) {
+    int i = 7;
+    double Xmin = value[i * 6 + 0], Xmax = value[i * 6 + 1];
+    double Ymin = value[i * 6 + 2], Ymax = value[i * 6 + 3];
+    double Zmin = value[i * 6 + 4], Zmax = value[i * 6 + 5];
 
     drawShape(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax);
 }
 
-void drawWingstailHorizontal() {
-    double Xmin =  1.00, Xmax =  2.00;
-    double Ymin = -0.25, Ymax =  0.25;
-    double Zmin = -1.00, Zmax =  1.00;
+void drawWingstailHorizontal(double value[]) {
+    int i = 8;
+    double Xmin = value[i * 6 + 0], Xmax = value[i * 6 + 1];
+    double Ymin = value[i * 6 + 2], Ymax = value[i * 6 + 3];
+    double Zmin = value[i * 6 + 4], Zmax = value[i * 6 + 5];
 
     drawShape(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax);
 }
