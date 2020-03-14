@@ -7,18 +7,35 @@
 #include "wingsmain.h"
 #include "utils.h"
 
-void drawWingsmain() {
+void drawSideWings() {
+    /*Sayap pertama*/
     double Xmin = -1.00, Xmax = 0.00;
     double Ymin = -0.10, Ymax = 0.10;
     double Zmin = -2.00, Zmax = 2.00;
 
-    /* Sayap pertama */
     drawShape(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax);
+}
 
-    Xmin = -1.00, Xmax = 0.00;
-    Ymin =  0.90, Ymax = 1.10;
-    Zmin = -2.00, Zmax = 2.00;
+void drawUpperWings() {
+    /* Sayap kedua */
+    double Xmin = -1.00, Xmax = 0.00;
+    double Ymin =  0.90, Ymax = 1.10;
+    double Zmin = -2.00, Zmax = 2.00;
 
-    /* Sayap pertama */
     drawShape(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax);
+}
+
+void drawUpperWingBrace() {
+    /* Konektor */
+    double Xmin = -1.00, Xmax = 0.00;
+    double Ymin = -0.75, Ymax = 1.00;
+    double Zmin = -0.10, Zmax = 0.10;
+
+    drawShape(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax);
+}
+
+void drawWingsmain() {
+    drawSideWings();
+    drawUpperWings();
+    drawUpperWingBrace();
 }
