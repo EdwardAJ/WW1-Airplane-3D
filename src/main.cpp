@@ -38,12 +38,15 @@ int angleObjectx = 0;
 int angleObjecty = 0;
 int angleObjectz = 0;
 
+bool isShadingOn = true;
+
 // Field of view
 double fov = 55;
 double asp = width / height;
 double dist = 8.0;
 
 double value[55];
+double colorValues[28];
 
 void drawWindow();
 void keyboardControl(int key, int x, int y);
@@ -55,7 +58,7 @@ void draw3D () {
     double Ymin = -0.25, Ymax =  0.25;
     double Zmin = -1.00, Zmax =  1.00;
 
-    drawShape(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax);
+    drawShape(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, 1.0, 0.0, 0.0);
 }
 
 void drawWindow() {
@@ -63,7 +66,7 @@ void drawWindow() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(fov, asp, dist/4, dist*4);
-    glTranslatef(-moveWorldx, -moveWorldy, 0);
+    glTranslatef(-moveWorldx, moveWorldy, 0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
@@ -75,24 +78,23 @@ void initializeDisplay () {
     glEnable(GL_DEPTH_TEST);
     glLoadIdentity();
 
-    bool isShadingOn = true;
-    /* Lightning */
-    glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_LIGHT1);
-    glEnable(GL_COLOR_MATERIAL);
-
-    GLfloat ambientLight[] = {0.3, 0.3, 0.3, 1.0};
-    GLfloat diffuseLight[] = {0.7, 0.7, 0.7, 1.0};
-    GLfloat specularLight[] = {0.0, 1.0, 0.0, 1.0};
-
-    /* Lightning Position */
-    GLfloat positionLight[] = {2.5, 2.5, 2.0, 1.0};
-    glLightfv(GL_LIGHT0, GL_POSITION, positionLight);
 
     /* Set material */
     if (isShadingOn) {
+         /* Lighting */
+        glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0);
+        glEnable(GL_LIGHT1);
+        glEnable(GL_COLOR_MATERIAL);
+
+        GLfloat ambientLight[] = {0.3, 0.3, 0.3, 1.0};
+        GLfloat diffuseLight[] = {0.7, 0.7, 0.7, 1.0};
+        GLfloat specularLight[] = {0.0, 1.0, 0.0, 1.0};
+
+        /* Lighting Position */
+        GLfloat positionLight[] = {2.5, 2.5, 2.0, 1.0};
+        glLightfv(GL_LIGHT0, GL_POSITION, positionLight);
         GLfloat a[] = {0.3, 0.3, 0.3, 1.0};
         GLfloat d[] = {0.7, 0.7, 0.7, 1.0};
         GLfloat s[] = {1.0, 1.0, 1.0, 1.0};
@@ -122,7 +124,8 @@ void setCameraWorld() {
     double upZcoord = 0 + moveCameraUpz;
 
     gluLookAt(eyeXcoord, eyeYcoord, eyeZcoord,
-            originXcoord, originYcoord, originZcoord,upXcoord, upYcoord, upZcoord
+            originXcoord, originYcoord, originZcoord,
+            upXcoord, upYcoord, upZcoord
     );
 }
 
@@ -130,22 +133,17 @@ void drawAirplane() {
     glRotatef(angleObjectx, 1, 0, 0);
     glRotatef(angleObjecty, 0, 1, 0);
     glRotatef(angleObjectz, 0, 0, 1);
-    drawBody(value);
-    drawPropeller(value);
-    drawWingstail(value);
-    drawWingsmain(value);
+    drawBody(value, colorValues);
+    drawPropeller(value, colorValues);
+    drawWingstail(value, colorValues);
+    drawWingsmain(value, colorValues);
 }
 
 void drawAndFlush() {
-    //drawBody();
-    //drawPropeller();
-    //drawWingstail();
-    //drawWingsmain();
     drawAirplane();
     glFlush();
     glutSwapBuffers();
 }
-
 
 void displayWorld() {
     initializeDisplay();
@@ -256,11 +254,9 @@ void ordinaryKeyboardControl(unsigned char key, int x, int y) {
     glutPostRedisplay();
 }
 
-void removeDupWord(string str, int i) {
-   int p = 0;
+void insertCoordinatesFromFile(string str, int i) {
    int j = 0;
    size_t sz;
-
    string word = "";
    for (auto x : str)
    {
@@ -276,6 +272,37 @@ void removeDupWord(string str, int i) {
        }
    }
    value[i * 6 + j] = stod(word, &sz);
+}
+
+void insertColorsFromFile(string str, int i) {
+   int j = 0;
+   size_t sz;
+   string word = "";
+   for (auto x : str)
+   {
+       if (x == ' ')
+       {
+           colorValues[i * 3 + j] = stod(word, &sz);
+           cout << "colorValues color: " << colorValues[i * 3 + j] << endl;
+           word = "";
+           j++;
+       }
+       else
+       {
+           word = word + x;
+       }
+   }
+   colorValues[i * 3 + j] = stod(word, &sz);
+   cout << "colorValues color: " << colorValues[i * 3 + j] << endl;
+}
+
+void insertModelDefinitionFromFile(string str, int i) {
+    if (i < 9) {
+        insertCoordinatesFromFile(str, i);
+    } else {
+        int indexColor = i - 9;
+        insertColorsFromFile(str, indexColor);
+    }
 }
 
 void displayPrintMenu() {
@@ -302,7 +329,8 @@ void displayPrintMenu() {
     cout << "Key 5 dan 6 digunakan untuk memutar vector up kamera pada sumbu Z dan -Z" << endl;
     cout << "-------------------------------------------------" << endl;
     cout << "SHADER: " << endl;
-    cout << "Key Enter digunakan untuk memberi atau melepas shader warna" << endl;
+    cout << "Ketik 1 pada terminal jika ingin dilakukan shading!" << endl;
+    cout << "Ketik 0 pada terminal jika tidak ingin dilakukan shading!" << endl;
     cout << "-------------------------------------------------" << endl;
     cout << "MERESET DEFAULT VIEW DAN MENGELUARKAN HELP MENU: " << endl;
     cout << "Tekan tombol klik kiri untuk mereset view ke state semula" << endl;
@@ -322,28 +350,35 @@ void mouseControl(int button, int state, int x, int y) {
     }
 }
 
-
-int main(int argc, char **argv) {
+void readModelDefinitionFromExternalFile() {
     ifstream infile;
     string data;
     int i = 0;
 
-    infile.open("input.txt");
+    infile.open("modeldefinition.txt");
     while (infile) {
         getline(infile, data);
         cout << "String: " << data << endl;
-        removeDupWord(data,i);
+        insertModelDefinitionFromFile(data,i);
         i = i + 1;
     }
 
-    // while (line.length() != 0) {
-    //     cout << "Enter text line: " << endl;
-    //     getline(cin, line);
-    //     result = result + " " + line;
-    // }
-
     infile.close();
+}
 
+
+int main(int argc, char **argv) {
+
+    int shadingNumber;
+    cout << "Silakan ketik mode shading (1 / 0)" << endl;
+    cin >> shadingNumber;
+    if (shadingNumber == 1) {
+        isShadingOn = true;
+    } else {
+        isShadingOn = false;
+    }
+
+    readModelDefinitionFromExternalFile();
     glutInit(&argc, argv);
     glutInitDisplayMode( GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowSize(width, height);
